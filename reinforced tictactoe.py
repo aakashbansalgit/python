@@ -1,4 +1,5 @@
 from copy import deepcopy
+import sys
 
 
 #tic tac toe board
@@ -8,7 +9,7 @@ class Board():
         #define players
         self.player_1 = 'X'
         self.player_2 = 'O'
-        self.empsqure = '_'
+        self.empsqure = '-'
         
         #board position
         self.position = {}
@@ -32,7 +33,7 @@ class Board():
     
     
     def make_move(self, row, col):
-        board = Board()
+        board = Board(self)
         board.position[row, col] = self.player_1
         (board.player_1,board.player_2) = (board.player_2,board.player_1)
         return board
@@ -84,11 +85,44 @@ class Board():
         
         for row in range (3):
             for col in range (3):
-                if self.positon[row,col] == self.empsqure:
+                if self.position[row,col] == self.empsqure:
+                    
                     actions.append(self.make_move(row,col))
         #return list of valid actions (board instances)
         return actions
-        
+    
+    def game_loop(self):
+        print ("\n Tic Tac Toe - Reiforced Learning\n")
+        print ('Enter the move!\nFormat: 1,1 (as in [x][y] where x is column and y is row)\nType exit to quit the game')
+        print (self)
+        while True:
+            user_input = input('>')
+            if user_input == 'exit':
+                sys.exit()
+            if user_input == '':
+                continue
+            try:
+                row = int(user_input.split(',')[1]) -1
+                col = int(user_input.split(',')[0]) -1
+                if self.position[row,col] !=self.empsqure:
+                    print ('Illegal Move!')
+                    continue
+                self = self.make_move(row,col)
+                
+                print (self)
+                if self.is_win():
+                    print (self.player_2, "WON the Game!")
+                    break
+                elif self.is_draw():
+                    print ("Game is Drawn!")
+                    break
+                
+                    
+            except Exception as e:
+                print('Error:', e)
+                print ('Illegal Command!')
+                print ('Move Format: 1,1 (as in [x][y] where x is column and y is row)')
+                 
                  
     def __str__(self):
         #string representation of board
@@ -103,22 +137,8 @@ class Board():
         #return
         return board_string
 
-
-
-
-
 #main
 if __name__ == '__main__':
     #board instance
     board = Board()
-    print (board)
-    board = board.make_move(2,1)
-    print (board)
-    if board.is_win():
-        print (board.player_2 + "Won")
-    elif board.is_draw():
-        print("No Winner")
-        
-    
-    board1 = Board(board)
-    print (board1)
+    board.game_loop()
