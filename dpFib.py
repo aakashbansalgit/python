@@ -17,11 +17,13 @@ def fib3(n, memo = {}):
         return 1
     else:
         if (n in memo):
-            return momo[n]
+            return memo[n]
     if n<=2:
         return 1
-    memo[n] = fib(n-1)+fib(n-2);
+    memo[n] = fib(n-1, memo)+fib(n-2, memo);
     return memo[n] 
+# time -> O(n)
+# space -> O(n)
     
 
 if __name__ == '__main__':
