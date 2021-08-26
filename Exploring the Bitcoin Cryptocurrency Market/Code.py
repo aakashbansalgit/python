@@ -15,3 +15,4 @@ market_cap_raw = dec6[['id', 'market_cap_usd']]
 
 # Counting the number of values
 market_cap_raw.count()
+
